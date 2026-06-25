@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "g8scope-flask"
+version = "1.0.0"
+description = "Flask adapter for the g8scope error-capture platform"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Developers Hub Sdn Bhd" }]
+keywords = ["g8scope", "flask", "error", "observability", "monitoring", "telemetry"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Flask",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Monitoring",
+]
+# Depends on the runtime SDK. It is currently unpublished — install it from a
+# local checkout in editable mode first:
+#   python3 -m pip install --user -e ../g8scope-python
+dependencies = ["g8scope"]
+
+[project.optional-dependencies]
+flask = ["Flask>=2.0"]
+dev = ["pytest", "Flask>=2.0"]
+
+[project.urls]
+Homepage = "https://scope.g8suite.com"
+Repository = "https://github.com/developers-hub-my/g8scope-flask"
+
+[tool.setuptools.packages.find]
+include = ["g8scope_flask*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
