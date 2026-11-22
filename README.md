@@ -1,8 +1,8 @@
-# g8scope-flask
+# bliptrace-flask
 
 Flask adapter for the [g8scope](https://scope.g8suite.com) error-capture and
 observability platform. A **thin** integration layer over the runtime
-[`g8scope`](../g8scope-python) Python SDK: it registers a Flask error handler,
+[`g8scope`](../bliptrace-python) Python SDK: it registers a Flask error handler,
 enriches captured errors with request context, and ships them to the g8scope
 ingest API.
 
@@ -18,14 +18,14 @@ The runtime SDK is currently unpublished, so install it from a local checkout
 first, then install this adapter:
 
 ```bash
-python3 -m pip install -e ../g8scope-python
+python3 -m pip install -e ../bliptrace-python
 python3 -m pip install -e .
 ```
 
 Flask itself is an optional dependency (you almost certainly already have it):
 
 ```bash
-python3 -m pip install "g8scope-flask[flask]"
+python3 -m pip install "bliptrace-flask[flask]"
 ```
 
 ## Quick start

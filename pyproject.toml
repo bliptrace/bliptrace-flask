@@ -19,7 +19,7 @@ classifiers = [
 ]
 # Depends on the runtime SDK. It is currently unpublished — install it from a
 # local checkout in editable mode first:
-#   python3 -m pip install --user -e ../g8scope-python
+#   python3 -m pip install --user -e ../bliptrace-python
 dependencies = ["g8scope"]
 
 [project.optional-dependencies]
@@ -28,7 +28,7 @@ dev = ["pytest", "Flask>=2.0"]
 
 [project.urls]
 Homepage = "https://scope.g8suite.com"
-Repository = "https://github.com/developers-hub-my/g8scope-flask"
+Repository = "https://github.com/bliptrace/bliptrace-flask"
 
 [tool.setuptools.packages.find]
 include = ["g8scope_flask*"]
