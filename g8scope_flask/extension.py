@@ -19,7 +19,8 @@ from g8scope import Client, Config
 
 from .context import build_context
 
-# Maps Config kwargs to their ``G8SCOPE_*`` Flask config keys.
+# Maps Config kwargs to their ``BLIPTRACE_*`` Flask config keys
+# (deprecated ``G8SCOPE_*`` keys are read as a fallback).
 _CONFIG_KEYS = (
     "key",
     "endpoint",
@@ -99,9 +100,12 @@ class G8Scope:
         app_config = getattr(app, "config", {}) or {}
 
         for name in _CONFIG_KEYS:
-            flask_key = "G8SCOPE_" + name.upper()
-            if flask_key in app_config:
-                kwargs[name] = app_config[flask_key]
+            # BLIPTRACE_* wins; G8SCOPE_* is a deprecated fallback (next major drops it).
+            for prefix in ("BLIPTRACE_", "G8SCOPE_"):
+                flask_key = prefix + name.upper()
+                if flask_key in app_config:
+                    kwargs[name] = app_config[flask_key]
+                    break
 
         # Explicit kwargs to __init__ win over app.config.
         kwargs.update(self._config_overrides)

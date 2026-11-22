@@ -94,6 +94,20 @@ def test_config_read_from_app_config():
     assert g8.transport.sent[0]["envelope"]["environment"] == "staging"
 
 
+def test_bliptrace_config_wins_over_deprecated_g8scope():
+    app = Flask(__name__)
+    app.config["PROPAGATE_EXCEPTIONS"] = False
+    app.config["BLIPTRACE_KEY"] = "new-key"
+    app.config["G8SCOPE_KEY"] = "old-key"
+    app.config["BLIPTRACE_ENVIRONMENT"] = "new-env"
+    app.config["G8SCOPE_ENVIRONMENT"] = "old-env"
+    app.config["G8SCOPE_RELEASE"] = "old-rel"  # no BLIPTRACE_RELEASE: falls back
+    g8 = G8Scope(app)
+    assert g8.client.config.key == "new-key"
+    assert g8.client.config.environment == "new-env"
+    assert g8.client.config.release == "old-rel"
+
+
 def test_init_app_factory_pattern():
     g8 = G8Scope()
     app = Flask(__name__)

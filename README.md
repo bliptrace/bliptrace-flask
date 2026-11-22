@@ -58,38 +58,42 @@ error handling proceeds unchanged — g8scope only observes.
 
 ## Configuration
 
-Pass settings as keyword arguments, or via `app.config` using `G8SCOPE_*`
+Pass settings as keyword arguments, or via `app.config` using `BLIPTRACE_*`
 keys. Explicit keyword arguments take precedence over `app.config`.
 
 ```python
 app.config.update(
-    G8SCOPE_KEY="your-ingest-key",
-    G8SCOPE_ENDPOINT="https://ingest.scope.g8suite.com",
-    G8SCOPE_ENVIRONMENT="production",
-    G8SCOPE_RELEASE="1.4.2",
-    G8SCOPE_BASE_PATH="/srv/app",        # marks your code as in-app frames
-    G8SCOPE_SCRUB_KEYS=["password", "token"],
-    G8SCOPE_IGNORE_EXCEPTIONS=["KeyError"],
-    G8SCOPE_ENABLED=True,
+    BLIPTRACE_KEY="your-ingest-key",
+    BLIPTRACE_ENDPOINT="https://ingest.scope.g8suite.com",
+    BLIPTRACE_ENVIRONMENT="production",
+    BLIPTRACE_RELEASE="1.4.2",
+    BLIPTRACE_BASE_PATH="/srv/app",        # marks your code as in-app frames
+    BLIPTRACE_SCRUB_KEYS=["password", "token"],
+    BLIPTRACE_IGNORE_EXCEPTIONS=["KeyError"],
+    BLIPTRACE_ENABLED=True,
 )
 G8Scope(app)
 ```
 
 | Config key | Maps to | Notes |
 |---|---|---|
-| `G8SCOPE_KEY` | `key` | Ingest key. Nothing is sent without it. |
-| `G8SCOPE_ENDPOINT` | `endpoint` | Ingest base URL. |
-| `G8SCOPE_ENVIRONMENT` | `environment` | e.g. `production`, `staging`. |
-| `G8SCOPE_RELEASE` | `release` | Release / version identifier. |
-| `G8SCOPE_TIMEOUT` | `timeout` | Send timeout (seconds). |
-| `G8SCOPE_MAX_FRAMES` | `max_frames` | Max stack frames kept. |
-| `G8SCOPE_MAX_MESSAGE` | `max_message` | Max message length. |
-| `G8SCOPE_IGNORE_EXCEPTIONS` | `ignore_exceptions` | Classes or class names. |
-| `G8SCOPE_SCRUB_KEYS` | `scrub_keys` | Context keys to redact. |
-| `G8SCOPE_BASE_PATH` | `base_path` | Project root for in-app detection. |
-| `G8SCOPE_ENABLED` | `enabled` | Set `False` to disable. |
-| `G8SCOPE_SDK_NAME` | `sdk_name` | Override SDK name. |
-| `G8SCOPE_SDK_VERSION` | `sdk_version` | Override SDK version. |
+| `BLIPTRACE_KEY` | `key` | Ingest key. Nothing is sent without it. |
+| `BLIPTRACE_ENDPOINT` | `endpoint` | Ingest base URL. |
+| `BLIPTRACE_ENVIRONMENT` | `environment` | e.g. `production`, `staging`. |
+| `BLIPTRACE_RELEASE` | `release` | Release / version identifier. |
+| `BLIPTRACE_TIMEOUT` | `timeout` | Send timeout (seconds). |
+| `BLIPTRACE_MAX_FRAMES` | `max_frames` | Max stack frames kept. |
+| `BLIPTRACE_MAX_MESSAGE` | `max_message` | Max message length. |
+| `BLIPTRACE_IGNORE_EXCEPTIONS` | `ignore_exceptions` | Classes or class names. |
+| `BLIPTRACE_SCRUB_KEYS` | `scrub_keys` | Context keys to redact. |
+| `BLIPTRACE_BASE_PATH` | `base_path` | Project root for in-app detection. |
+| `BLIPTRACE_ENABLED` | `enabled` | Set `False` to disable. |
+| `BLIPTRACE_SDK_NAME` | `sdk_name` | Override SDK name. |
+| `BLIPTRACE_SDK_VERSION` | `sdk_version` | Override SDK version. |
+
+> **Deprecated:** the old `G8SCOPE_*` keys are still read as a fallback when
+> the matching `BLIPTRACE_*` key is unset. They will be removed in the next
+> major version.
 
 ## Manual capture
 
@@ -109,7 +113,7 @@ except Exception as exc:
 
 The `authorization`, `cookie`, `set-cookie`, and `proxy-authorization` request
 headers are stripped before the envelope leaves your process. Additional PII is
-redacted server-side, and you can redact more locally with `G8SCOPE_SCRUB_KEYS`.
+redacted server-side, and you can redact more locally with `BLIPTRACE_SCRUB_KEYS`.
 
 ## Licence
 
