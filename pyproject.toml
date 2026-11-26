@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "g8scope-flask"
+name = "bliptrace-flask"
 version = "1.0.0"
-description = "Flask adapter for the g8scope error-capture platform"
+description = "Flask adapter for the Bliptrace error-capture platform"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [{ name = "Developers Hub Sdn Bhd" }]
-keywords = ["g8scope", "flask", "error", "observability", "monitoring", "telemetry"]
+keywords = ["bliptrace", "flask", "error", "observability", "monitoring", "telemetry"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Framework :: Flask",
@@ -20,7 +20,7 @@ classifiers = [
 # Depends on the runtime SDK. It is currently unpublished — install it from a
 # local checkout in editable mode first:
 #   python3 -m pip install --user -e ../bliptrace-python
-dependencies = ["g8scope"]
+dependencies = ["bliptrace"]
 
 [project.optional-dependencies]
 flask = ["Flask>=2.0"]
@@ -31,7 +31,7 @@ Homepage = "https://scope.g8suite.com"
 Repository = "https://github.com/bliptrace/bliptrace-flask"
 
 [tool.setuptools.packages.find]
-include = ["g8scope_flask*"]
+include = ["bliptrace_flask*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

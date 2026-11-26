@@ -1,8 +1,8 @@
-"""Integration tests: a real Flask app wired with the G8Scope extension."""
+"""Integration tests: a real Flask app wired with the Bliptrace extension."""
 
 import pytest
 
-from g8scope_flask import G8Scope
+from bliptrace_flask import Bliptrace
 
 from conftest import FakeTransport
 
@@ -15,7 +15,7 @@ def _make_app(**config):
     # Leave TESTING off so Flask renders a 500 (and fires got_request_exception)
     # rather than re-raising the exception out of the test client.
     app.config["PROPAGATE_EXCEPTIONS"] = False
-    g8 = G8Scope(app, **config)
+    g8 = Bliptrace(app, **config)
     # Swap in a recording transport so nothing hits the network.
     if g8.client is not None:
         g8.transport = FakeTransport()
@@ -43,7 +43,7 @@ def test_unhandled_exception_is_captured_and_shipped():
     assert len(sent) == 1
     env = sent[0]["envelope"]
     assert env["runtime"]["name"] == "python"
-    assert env["sdk"]["name"] == "g8scope-python"
+    assert env["sdk"]["name"] == "bliptrace-python"
     assert env["exception"]["type"] == "RuntimeError"
     assert env["exception"]["message"] == "kaboom"
     assert "project" not in env  # resolved server-side from the key
@@ -79,9 +79,9 @@ def test_disabled_sends_nothing():
 def test_config_read_from_app_config():
     app = Flask(__name__)
     app.config["PROPAGATE_EXCEPTIONS"] = False
-    app.config["G8SCOPE_KEY"] = "from-config"
-    app.config["G8SCOPE_ENVIRONMENT"] = "staging"
-    g8 = G8Scope(app)
+    app.config["BLIPTRACE_KEY"] = "from-config"
+    app.config["BLIPTRACE_ENVIRONMENT"] = "staging"
+    g8 = Bliptrace(app)
     g8.transport = FakeTransport()
     g8.client.transport = g8.transport
 
@@ -94,7 +94,7 @@ def test_config_read_from_app_config():
     assert g8.transport.sent[0]["envelope"]["environment"] == "staging"
 
 
-def test_bliptrace_config_wins_over_deprecated_g8scope():
+def test_bliptrace_config_wins_over_deprecated_keys():
     app = Flask(__name__)
     app.config["PROPAGATE_EXCEPTIONS"] = False
     app.config["BLIPTRACE_KEY"] = "new-key"
@@ -102,17 +102,17 @@ def test_bliptrace_config_wins_over_deprecated_g8scope():
     app.config["BLIPTRACE_ENVIRONMENT"] = "new-env"
     app.config["G8SCOPE_ENVIRONMENT"] = "old-env"
     app.config["G8SCOPE_RELEASE"] = "old-rel"  # no BLIPTRACE_RELEASE: falls back
-    g8 = G8Scope(app)
+    g8 = Bliptrace(app)
     assert g8.client.config.key == "new-key"
     assert g8.client.config.environment == "new-env"
     assert g8.client.config.release == "old-rel"
 
 
 def test_init_app_factory_pattern():
-    g8 = G8Scope()
+    g8 = Bliptrace()
     app = Flask(__name__)
     app.config["PROPAGATE_EXCEPTIONS"] = False
-    app.config["G8SCOPE_KEY"] = "k"
+    app.config["BLIPTRACE_KEY"] = "k"
     g8.init_app(app)
     g8.transport = FakeTransport()
     g8.client.transport = g8.transport
@@ -128,7 +128,7 @@ def test_init_app_factory_pattern():
 
 def test_manual_capture_outside_request_context():
     app = Flask(__name__)
-    g8 = G8Scope(app, key="k")
+    g8 = Bliptrace(app, key="k")
     g8.transport = FakeTransport()
     g8.client.transport = g8.transport
 
@@ -145,11 +145,11 @@ def test_manual_capture_outside_request_context():
 
 def test_extension_registered_on_app():
     app, g8 = _make_app(key="k")
-    assert app.extensions["g8scope"] is g8
+    assert app.extensions["bliptrace"] is g8
 
 
 def test_capture_never_raises_with_no_client():
-    g8 = G8Scope()  # never init_app'd -> no client
+    g8 = Bliptrace()  # never init_app'd -> no client
     try:
         raise RuntimeError("x")
     except RuntimeError as exc:

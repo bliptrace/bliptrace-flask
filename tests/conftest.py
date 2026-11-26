@@ -1,6 +1,6 @@
 """Shared test helpers: a fake transport that records envelopes (no network)."""
 
-from g8scope import Transport
+from bliptrace import Transport
 
 
 class FakeTransport(Transport):

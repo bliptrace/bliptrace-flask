@@ -1,15 +1,15 @@
 # bliptrace-flask
 
-Flask adapter for the [g8scope](https://scope.g8suite.com) error-capture and
+Flask adapter for the [Bliptrace](https://scope.g8suite.com) error-capture and
 observability platform. A **thin** integration layer over the runtime
-[`g8scope`](../bliptrace-python) Python SDK: it registers a Flask error handler,
-enriches captured errors with request context, and ships them to the g8scope
+[`bliptrace`](../bliptrace-python) Python SDK: it registers a Flask error handler,
+enriches captured errors with request context, and ships them to the Bliptrace
 ingest API.
 
 It is designed to **never break your application** — every capture path is
 guard-wrapped, and the send is fire-and-forget.
 
-> The `project` is never sent in the payload. g8scope resolves it server-side
+> The `project` is never sent in the payload. Bliptrace resolves it server-side
 > from your ingest key (anti-spoof).
 
 ## Installation
@@ -32,18 +32,18 @@ python3 -m pip install "bliptrace-flask[flask]"
 
 ```python
 from flask import Flask
-from g8scope_flask import G8Scope
+from bliptrace_flask import Bliptrace
 
 app = Flask(__name__)
-g8 = G8Scope(app, key="your-ingest-key")
+g8 = Bliptrace(app, key="your-ingest-key")
 ```
 
 ### Application-factory pattern
 
 ```python
-from g8scope_flask import G8Scope
+from bliptrace_flask import Bliptrace
 
-g8 = G8Scope()
+g8 = Bliptrace()
 
 def create_app():
     app = Flask(__name__)
@@ -54,7 +54,7 @@ def create_app():
 Once registered, any unhandled exception raised while handling a request is
 captured automatically (via Flask's `got_request_exception` signal) and
 shipped, enriched with request method, URL, path, and headers. Your app's own
-error handling proceeds unchanged — g8scope only observes.
+error handling proceeds unchanged — Bliptrace only observes.
 
 ## Configuration
 
@@ -72,7 +72,7 @@ app.config.update(
     BLIPTRACE_IGNORE_EXCEPTIONS=["KeyError"],
     BLIPTRACE_ENABLED=True,
 )
-G8Scope(app)
+Bliptrace(app)
 ```
 
 | Config key | Maps to | Notes |
@@ -101,7 +101,7 @@ To capture a handled exception, call `capture_exception`. Live request context
 is merged in automatically; pass extra data under `custom`:
 
 ```python
-g8 = app.extensions["g8scope"]
+g8 = app.extensions["bliptrace"]
 
 try:
     risky()

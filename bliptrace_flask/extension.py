@@ -1,8 +1,8 @@
-"""Flask extension that wires the g8scope runtime client into a Flask app.
+"""Flask extension that wires the Bliptrace runtime client into a Flask app.
 
-THIN glue over the ``g8scope`` Python SDK. It:
+THIN glue over the ``bliptrace`` Python SDK. It:
 
-* builds a :class:`g8scope.Client` once from the app config / kwargs,
+* builds a :class:`bliptrace.Client` once from the app config / kwargs,
 * listens for unhandled exceptions via Flask's ``got_request_exception``
   signal and ships them, enriched with request context,
 * exposes :meth:`capture_exception` for manual capture.
@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
-from g8scope import Client, Config
+from bliptrace import Client, Config
 
 from .context import build_context
 
@@ -38,17 +38,17 @@ _CONFIG_KEYS = (
 )
 
 
-class G8Scope:
-    """Flask extension for g8scope error capture.
+class Bliptrace:
+    """Flask extension for Bliptrace error capture.
 
     Usage::
 
         app = Flask(__name__)
-        g8 = G8Scope(app, key="ingest-key")
+        g8 = Bliptrace(app, key="ingest-key")
 
     or, with the application-factory pattern::
 
-        g8 = G8Scope()
+        g8 = Bliptrace()
         g8.init_app(app)
     """
 
@@ -69,7 +69,7 @@ class G8Scope:
         # Register on the app extensions registry (Flask convention).
         try:
             app.extensions = getattr(app, "extensions", {})
-            app.extensions["g8scope"] = self
+            app.extensions["bliptrace"] = self
         except Exception:
             pass
 

@@ -1,6 +1,6 @@
 """Unit tests for the duck-typed context builder (no live Flask request)."""
 
-from g8scope_flask import build_context
+from bliptrace_flask import build_context
 
 
 class FakeRequest:
