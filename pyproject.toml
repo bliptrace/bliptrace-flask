@@ -27,7 +27,7 @@ flask = ["Flask>=2.0"]
 dev = ["pytest", "Flask>=2.0"]
 
 [project.urls]
-Homepage = "https://scope.g8suite.com"
+Homepage = "https://bliptrace.com"
 Repository = "https://github.com/bliptrace/bliptrace-flask"
 
 [tool.setuptools.packages.find]

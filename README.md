@@ -1,6 +1,6 @@
 # bliptrace-flask
 
-Flask adapter for the [Bliptrace](https://scope.g8suite.com) error-capture and
+Flask adapter for the [Bliptrace](https://bliptrace.com) error-capture and
 observability platform. A **thin** integration layer over the runtime
 [`bliptrace`](../bliptrace-python) Python SDK: it registers a Flask error handler,
 enriches captured errors with request context, and ships them to the Bliptrace
@@ -64,7 +64,7 @@ keys. Explicit keyword arguments take precedence over `app.config`.
 ```python
 app.config.update(
     BLIPTRACE_KEY="your-ingest-key",
-    BLIPTRACE_ENDPOINT="https://ingest.scope.g8suite.com",
+    BLIPTRACE_ENDPOINT="https://ingest.bliptrace.com",
     BLIPTRACE_ENVIRONMENT="production",
     BLIPTRACE_RELEASE="1.4.2",
     BLIPTRACE_BASE_PATH="/srv/app",        # marks your code as in-app frames
